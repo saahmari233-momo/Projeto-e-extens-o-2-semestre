@@ -1,0 +1,159 @@
+Código Java
+
+const ongsData = [
+    { nome: "ONG Prato Cheio", bairro: "Centro", cidade: "São Paulo", tel: "(11) 98765-4321", tipo: "Cozinha Comunitária" },
+    { nome: "Instituto Mesa Brasil", bairro: "Pinheiros", cidade: "São Paulo", tel: "(11) 91234-5678", tipo: "Banco de Alimentos" },
+    { nome: "Ação da Cidadania", bairro: "Lapa", cidade: "São Paulo", tel: "(11) 97777-8888", tipo: "Distribuição de Cestas" },
+    { nome: "Sopão Solidário", bairro: "Itaquera", cidade: "São Paulo", tel: "(11) 95555-4444", tipo: "Refeições Prontas" }
+];
+
+function renderOngs(filtradas) {
+    const listContainer = document.getElementById('ongList');
+    if (!listContainer) return;
+
+    listContainer.innerHTML = '';
+    
+    if (filtradas.length === 0) {
+        listContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #718096;">Nenhuma ONG encontrada para este local.</p>';
+        return;
+    }
+
+    filtradas.forEach(ong => {
+        const card = document.createElement('div');
+        card.className = 'ong-card';
+        card.innerHTML = `
+            <h3>${ong.nome}</h3>
+            <p><strong>Bairro:</strong> ${ong.bairro}</p>
+            <p><strong>Cidade:</strong> ${ong.cidade}</p>
+            <p><strong>Tipo:</strong> ${ong.tipo}</p>
+            <p class="phone">📞 ${ong.tel}</p>
+        `;
+        listContainer.appendChild(card);
+    });
+}
+
+function filtrarOngs() {
+    const termo = document.getElementById('searchOng').value.toLowerCase();
+    const resultado = ongsData.filter(ong => 
+        ong.bairro.toLowerCase().includes(termo) || 
+        ong.cidade.toLowerCase().includes(termo) ||
+        ong.nome.toLowerCase().includes(termo)
+    );
+    renderOngs(resultado);
+}
+
+
+function setPerfil(perfil) {
+    const formGroupAlimentos = document.getElementById('groupAlimentos');
+    const formGroupFamilia = document.getElementById('groupFamilia');
+    const inputPerfil = document.getElementById('perfilInput');
+    
+    const btnDoador = document.getElementById('btnPerfilDoador');
+    const btnBeneficiario = document.getElementById('btnPerfilBeneficiario');
+
+    inputPerfil.value = perfil;
+
+    if (perfil === 'doador') {
+        btnDoador.classList.add('active');
+        btnBeneficiario.classList.remove('active');
+        
+        formGroupAlimentos.style.display = 'block';
+        formGroupFamilia.style.display = 'none';
+    } else {
+        btnBeneficiario.classList.add('active');
+        btnDoador.classList.remove('active');
+        
+        formGroupAlimentos.style.display = 'none';
+        formGroupFamilia.style.display = 'block';
+    }
+}
+
+function submeterCadastro(event) {
+    event.preventDefault();
+    const perfil = document.getElementById('perfilInput').value;
+    const nome = document.getElementById('nome').value;
+
+    if (perfil === 'doador') {
+        alert(`Obrigado pelo cadastro, ${nome}! Entraremos em contato para organizar a coleta dos alimentos.`);
+    } else {
+        alert(`Cadastro realizado com sucesso, ${nome}! Entraremos em contato indicando o ponto de retirada mais próximo.`);
+    }
+
+    event.target.reset();
+}
+
+/
+function toggleChat() {
+    const chatBox = document.getElementById('aiChatBox');
+    chatBox.style.display = (chatBox.style.display === 'flex') ? 'none' : 'flex';
+}
+
+function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+
+    if (text === '') return;
+
+    addMessage(text, 'user-message');
+    input.value = '';
+
+    // Simula resposta da IA com atraso
+    setTimeout(() => {
+        const response = getAIResponse(text);
+        addMessage(response, 'bot-message');
+    }, 500);
+}
+
+function addMessage(text, className) {
+    const messagesContainer = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${className}`;
+    messageDiv.innerText = text;
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// Banco de Respostas do Chat (Base de Conhecimento de Alimentos)
+function getAIResponse(userText) {
+    const text = userText.toLowerCase();
+
+    // Dúvidas de Validade e Conservação
+    if (text.includes('vencido') || text.includes('validade') || text.includes('vencer')) {
+        return "⚠️ Regra geral: Alimentos com data de validade vencida não devem ser doados. Para consumo próprio, secos (arroz, feijão) duram um pouco além se bem armazenados, mas enlatados estufados ou amassados devem ser descartados!";
+    } 
+    if (text.includes('conservar') || text.includes('geladeira') || text.includes('guardar')) {
+        return "❄️ Dica de conservação: Alimentos cozidos duram até 3 a 4 dias na geladeira em potes fechados. Frutas e vegetais duram mais se congelados higienizados!";
+    }
+    if (text.includes('arroz') || text.includes('feijao') || text.includes('feijão')) {
+        return "🌾 Grãos crus (arroz/feijão) têm longa durabilidade se guardados longe de umidade. Se já estiverem cozidos, consuma ou congele em até 4 dias.";
+    }
+    if (text.includes('leite') || text.includes('iogurte') || text.includes('queijo')) {
+        return "🥛 Laticínios: Após abertos, consuma em até 3 a 5 dias na geladeira. Se mudar de cheiro, cor ou azedar, descarte imediatamente.";
+    }
+    if (text.includes('lata') || text.includes('enlatado')) {
+        return "🥫 Enlatados: NUNCA consuma ou doe latas estufadas, enferrujadas ou muito amassadas, pois há risco de contaminação graves (como botulismo).";
+    }
+
+    // Dúvidas sobre o Projeto
+    if (text.includes('doar') || text.includes('doacao') || text.includes('doação')) {
+        return "Você pode doar clicando em 'Como Ajudar' no topo da página e selecionando o perfil 'Quero Doar Alimentos'.";
+    } 
+    if (text.includes('receber') || text.includes('fome') || text.includes('preciso') || text.includes('ajuda')) {
+        return "Para receber alimentos, cadastre-se no formulário selecionando a opção 'Preciso de Ajuda / Receber'. Também consulte a seção de ONGs para encontrar um ponto próximo.";
+    } 
+    if (text.includes('oi') || text.includes('olá') || text.includes('boa tarde') || text.includes('bom dia')) {
+        return "Olá! Sou a IA nutricional do Fome Zero. Pode me perguntar sobre validade de alimentos, como armazenar comida ou como funciona o projeto!";
+    }
+
+    return "Não tenho certeza sobre essa dúvida específica. Tente perguntar sobre validade de um alimento (ex: 'como conservar leite?'), ou como cadastrar para doar/receber!";
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderOngs(ongsData);
+});
