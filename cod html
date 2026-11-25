@@ -1,0 +1,706 @@
+Codicgo HTML 
+
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Fome Zero | Conectando Quem Doa a Quem Precisa</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#ff5722',
+                            darkOrange: '#e64a19',
+                            lightOrange: '#fff3e0',
+                            green: '#10b981',
+                            darkGreen: '#047857',
+                            lightGreen: '#e6fffa',
+                            yellow: '#f59e0b',
+                            amber: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-hero {
+            background: linear-gradient(135deg, rgba(230, 74, 25, 0.88), rgba(4, 120, 87, 0.88)), 
+                        url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #047857;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+ <script src="script.js"></script>
+
+    <!-- CABEÇALHO / NAVBAR -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur shadow-md border-b-4 border-brand-orange">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#inicio" class="flex items-center gap-2 group">
+                    <div class="w-11 h-11 rounded-full bg-brand-orange text-white flex items-center justify-center text-xl font-black shadow-lg group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <span class="text-2xl font-extrabold tracking-tight text-brand-orange">FOME<span class="text-brand-green">ZERO</span></span>
+                </a>
+
+                <!-- Nav Desktop -->
+                <nav class="hidden md:flex space-x-8 items-center font-semibold text-gray-700">
+                    <a href="#inicio" class="hover:text-brand-orange transition-colors">Início</a>
+                    <a href="#cadastro" class="hover:text-brand-orange transition-colors">Cadastro</a>
+                    <a href="#ongs" class="hover:text-brand-orange transition-colors">ONGs & Pontos</a>
+                    <a href="#chat-ia" class="hover:text-brand-orange transition-colors">IA Tira-Dúvidas</a>
+                    <a href="#impacto" class="hover:text-brand-orange transition-colors">Impacto</a>
+                </nav>
+
+                <!-- Botões de Ação Rapida Header -->
+                <div class="hidden sm:flex items-center gap-3">
+                    <button onclick="scrollToCadastro('doar')" class="bg-brand-orange hover:bg-brand-darkOrange text-white font-bold py-2.5 px-5 rounded-full shadow-md hover:shadow-lg transition-all text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-heart"></i> Quero Doar
+                    </button>
+                    <button onclick="scrollToCadastro('receber')" class="bg-brand-green hover:bg-brand-darkGreen text-white font-bold py-2.5 px-5 rounded-full shadow-md hover:shadow-lg transition-all text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-hand-holding-hand"></i> Preciso de Ajuda
+                    </button>
+                </div>
+
+                <!-- Menu Mobile Btn -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-gray-700 text-2xl focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#inicio" onclick="toggleMobileMenu()" class="block font-medium text-gray-700 hover:text-brand-orange">Início</a>
+            <a href="#cadastro" onclick="toggleMobileMenu()" class="block font-medium text-gray-700 hover:text-brand-orange">Cadastro</a>
+            <a href="#ongs" onclick="toggleMobileMenu()" class="block font-medium text-gray-700 hover:text-brand-orange">ONGs & Pontos</a>
+            <a href="#chat-ia" onclick="toggleMobileMenu()" class="block font-medium text-gray-700 hover:text-brand-orange">IA Tira-Dúvidas</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <button onclick="scrollToCadastro('doar'); toggleMobileMenu();" class="w-full bg-brand-orange text-white font-bold py-2.5 rounded-lg text-center">Quero Doar Alimentos</button>
+                <button onclick="scrollToCadastro('receber'); toggleMobileMenu();" class="w-full bg-brand-green text-white font-bold py-2.5 rounded-lg text-center">Preciso de Alimentação</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="gradient-hero text-white py-20 lg:py-28 px-4 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center space-y-6 relative z-10">
+            <span class="inline-block bg-brand-yellow text-gray-900 text-xs md:text-sm font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
+                <i class="fa-solid fa-bolt mr-1"></i> Ação Social Direta e Inteligente
+            </span>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                Nenhuma Comida no Lixo, Nenhum Prato Vazio!
+            </h1>
+            <p class="text-lg sm:text-xl max-w-3xl mx-auto text-gray-100 font-normal leading-relaxed">
+                Conectamos restaurantes, feiras, supermercados e doadores individuais a comunidades e ONGs locais. Além disso, nossa IA ajuda você a reaproveitar alimentos e checar validade com segurança!
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+                <button onclick="scrollToCadastro('doar')" class="w-full sm:w-auto bg-brand-orange hover:bg-brand-darkOrange text-white text-lg font-bold py-4 px-8 rounded-xl shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-box-tissue text-2xl"></i> Fazer Doação de Alimentos
+                </button>
+                <button onclick="scrollToCadastro('receber')" class="w-full sm:w-auto bg-brand-green hover:bg-brand-darkGreen text-white text-lg font-bold py-4 px-8 rounded-xl shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-utensils text-2xl"></i> Solicitar Refeição / Ajuda
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- METRICAS DE IMPACTO -->
+    <section id="impacto" class="bg-white py-12 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+            <div class="p-4 rounded-2xl bg-brand-lightOrange border border-orange-100">
+                <div class="text-3xl lg:text-4xl font-black text-brand-darkOrange">+120.000</div>
+                <div class="text-sm font-bold text-gray-600 uppercase mt-1">Refeições Servidas</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-brand-lightGreen border border-green-100">
+                <div class="text-3xl lg:text-4xl font-black text-brand-darkGreen">48 Toneladas</div>
+                <div class="text-sm font-bold text-gray-600 uppercase mt-1">Alimentos Resgatados</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-100">
+                <div class="text-3xl lg:text-4xl font-black text-brand-amber">85 ONGs</div>
+                <div class="text-sm font-bold text-gray-600 uppercase mt-1">Pontos de Coleta</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-blue-50 border border-blue-100">
+                <div class="text-3xl lg:text-4xl font-black text-blue-600">100% Gratuito</div>
+                <div class="text-sm font-bold text-gray-600 uppercase mt-1">Rede Solidária</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO DE CADASTRO DUPLO (DOADOR VS BENEFICIÁRIO) -->
+    <section id="cadastro" class="py-16 px-4 max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl sm:text-4xl font-black text-gray-900">Portal de Cadastro</h2>
+            <p class="text-gray-600 mt-2 text-lg">Escolha como você deseja interagir com o Projeto Fome Zero</p>
+        </div>
+
+        <!-- ABAS DE NAVEGAÇÃO DO FORMULÁRIO -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="flex border-b border-gray-200">
+                <button id="tab-doar" onclick="switchTab('doar')" class="flex-1 py-4 px-6 text-center font-bold text-lg flex items-center justify-center gap-2 border-b-4 border-brand-orange text-brand-orange bg-orange-50/50 transition-all">
+                    <i class="fa-solid fa-gift"></i> Quero Doar (Doador)
+                </button>
+                <button id="tab-receber" onclick="switchTab('receber')" class="flex-1 py-4 px-6 text-center font-bold text-lg flex items-center justify-center gap-2 text-gray-500 border-b-4 border-transparent hover:text-brand-green transition-all">
+                    <i class="fa-solid fa-hand-holding-heart"></i> Preciso de Ajuda (Receber)
+                </button>
+            </div>
+
+            <!-- FORMULÁRIO DOADOR -->
+            <form id="form-doar" onsubmit="submitCadastro(event, 'doador')" class="p-6 sm:p-10 space-y-6">
+                <div class="bg-orange-50 border-l-4 border-brand-orange p-4 rounded-r-lg text-sm text-orange-900">
+                    <p class="font-bold"><i class="fa-solid fa-circle-info mr-1"></i> Atenção Doador:</p>
+                     Aceitamos cestas básicas, alimentos não-perecíveis, hortifrúti fresco e refeições preparadas (seguindo as normas de higiene).
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Nome Completo / Empresa *</label>
+                        <input type="text" required placeholder="Ex: Mercado Silva ou João Pedro" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-brand-orange outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Telefone / WhatsApp *</label>
+                        <input type="tel" required placeholder="(11) 99999-9999" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-brand-orange outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Tipo de Alimento a Doar *</label>
+                        <select required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-brand-orange outline-none bg-white">
+                            <option value="">Selecione uma opção...</option>
+                            <option value="nao-perecivel">Alimentos Não-Perecíveis (Arroz, Feijão, Macarrão)</option>
+                            <option value="marmitas">Refeições Preparadas / Marmitas Frescas</option>
+                            <option value="hortifruti">Frutas, Legumes e Verduras (Hortifrúti)</option>
+                            <option value="padaria">Pães e Itens de Padaria</option>
+                            <option value="outro">Cestas Básicas / Diversos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Quantidade Estimada (kg / unidades) *</label>
+                        <input type="text" required placeholder="Ex: 10kg, 20 marmitas, 5 cestas" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-brand-orange outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Endereço de Coleta ou Ponto de Entrega *</label>
+                    <input type="text" required placeholder="Rua, número, bairro e cidade" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-brand-orange outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Observações / Horário de Retirada</label>
+                    <textarea rows="3" placeholder="Informações adicionais sobre o alimento ou melhor horário..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-brand-orange outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white font-black py-4 px-6 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all">
+                    <i class="fa-solid fa-paper-plane mr-2"></i> Confirmar Doação
+                </button>
+            </form>
+
+            <!-- FORMULÁRIO BENEFICIÁRIO (RECEBER) -->
+            <form id="form-receber" onsubmit="submitCadastro(event, 'beneficiario')" class="p-6 sm:p-10 space-y-6 hidden">
+                <div class="bg-green-50 border-l-4 border-brand-green p-4 rounded-r-lg text-sm text-green-900">
+                    <p class="font-bold"><i class="fa-solid fa-heart-pulse mr-1"></i> Cadastro Seguro e Confidencial:</p>
+                    Seus dados serão utilizados apenas para conectar você ao ponto de distribuição ou ONG mais próxima de sua casa.
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Nome Completo *</label>
+                        <input type="text" required placeholder="Seu nome" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Telefone / WhatsApp de Contato *</label>
+                        <input type="tel" required placeholder="(11) 99999-9999" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Pessoas na Família / Residência *</label>
+                        <select required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none bg-white">
+                            <option value="1">Apenas eu (1 pessoa)</option>
+                            <option value="2-3">2 a 3 pessoas</option>
+                            <option value="4-5">4 a 5 pessoas</option>
+                            <option value="6+">6 ou mais pessoas</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Nível de Urgência *</label>
+                        <select required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none bg-white">
+                            <option value="urgente">Urgente (Sem refeição para hoje)</option>
+                            <option value="medio">Moderado (Preciso de cesta para a semana)</option>
+                            <option value="continuo">Acompanhamento contínuo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Endereço Completo e Bairro *</label>
+                    <input type="text" required placeholder="Nome da rua, número, bairro e cidade" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Alguma restrição alimentar ou necessidade especial?</label>
+                    <textarea rows="3" placeholder="Ex: Bebês na casa precisando de leite, pessoa com diabetes, intolerância a glúten..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-green hover:bg-brand-darkGreen text-white font-black py-4 px-6 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all">
+                    <i class="fa-solid fa-hand-holding-heart mr-2"></i> Solicitar Apoio Alimentar
+                </button>
+            </form>
+        </div>
+
+        <!-- MENSAGEM DE SUCESSO SIMULADA -->
+        <div id="alert-sucesso" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-md w-full p-8 text-center space-y-4 shadow-2xl transform transition-all">
+                <div class="w-16 h-16 bg-green-100 text-brand-green rounded-full flex items-center justify-center text-3xl mx-auto">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 class="text-2xl font-black text-gray-900" id="alert-titulo">Cadastro Realizado!</h3>
+                <p class="text-gray-600" id="alert-mensagem">Obrigado por se juntar à corrente Fome Zero. Em breve entraremos em contato via WhatsApp/Telefone.</p>
+                <button onclick="closeAlert()" class="w-full bg-brand-green text-white font-bold py-3 rounded-xl hover:bg-brand-darkGreen transition-colors">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAPA / DIRETÓRIO DE ONGS E PONTOS DE COLETA -->
+    <section id="ongs" class="py-16 bg-gray-100 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <h2 class="text-3xl sm:text-4xl font-black text-gray-900">ONGs e Cozinhas Solidárias Parceiras</h2>
+                <p class="text-gray-600 mt-2">Encontre pontos de entrega de alimentos ou postos de distribuição de refeições gratuitas perto de você.</p>
+                
+                <!-- Barra de Busca -->
+                <div class="mt-6 flex gap-2 max-w-md mx-auto">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="text" id="search-ong" onkeyup="filterOngs()" placeholder="Buscar por bairro, nome ou cidade..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-orange outline-none shadow-sm">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARDS DE ONGS -->
+            <div id="ongs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="ong-card bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100 flex flex-col justify-between" data-search="centro cozinha solidaria sp sao paulo prato">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="bg-orange-100 text-brand-darkOrange text-xs font-bold px-3 py-1 rounded-full uppercase">Cozinha Solidária</span>
+                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-md"><i class="fa-solid fa-clock mr-1"></i>Aberto Agora</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Cozinha Comunidade Viva</h3>
+                        <p class="text-sm text-gray-600 mb-4"><i class="fa-solid fa-location-dot text-brand-orange mr-1.5"></i> Rua Santa Ifigênia, 450 - Centro, São Paulo - SP</p>
+                        <p class="text-sm text-gray-500 mb-4">Servindo almoço comunitário gratuito diariamente das 11h30 às 13h30. Aceita doações de alimentos frescos e marmitas.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-100 flex justify-between items-center text-sm font-semibold">
+                        <span class="text-gray-600"><i class="fa-solid fa-phone mr-1 text-gray-400"></i> (11) 3222-1090</span>
+                        <a href="https://maps.google.com" target="_blank" class="text-brand-orange hover:text-brand-darkOrange">Ver no Mapa <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="ong-card bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100 flex flex-col justify-between" data-search="zona leste banco alimentos itaquera cesta">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="bg-green-100 text-brand-darkGreen text-xs font-bold px-3 py-1 rounded-full uppercase">Banco de Alimentos</span>
+                            <span class="text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-md"><i class="fa-solid fa-clock mr-1"></i>Abre às 08h</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Banco Solidário ZL</h3>
+                        <p class="text-sm text-gray-600 mb-4"><i class="fa-solid fa-location-dot text-brand-orange mr-1.5"></i> Av. Itaquera, 1200 - Itaquera, São Paulo - SP</p>
+                        <p class="text-sm text-gray-500 mb-4">Triagem e distribuição de cestas básicas para famílias cadastradas. Ponto principal de arrecadação de secos e molhados.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-100 flex justify-between items-center text-sm font-semibold">
+                        <span class="text-gray-600"><i class="fa-solid fa-phone mr-1 text-gray-400"></i> (11) 2055-8844</span>
+                        <a href="https://maps.google.com" target="_blank" class="text-brand-orange hover:text-brand-darkOrange">Ver no Mapa <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="ong-card bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100 flex flex-col justify-between" data-search="zona norte santana instuto abrigo marmita">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Instituto Social</span>
+                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-md"><i class="fa-solid fa-clock mr-1"></i>Aberto Agora</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Instituto Prato Cheio Norte</h3>
+                        <p class="text-sm text-gray-600 mb-4"><i class="fa-solid fa-location-dot text-brand-orange mr-1.5"></i> Rua Voluntários da Pátria, 890 - Santana, SP</p>
+                        <p class="text-sm text-gray-500 mb-4">Distribuição de sopas e refeições noturnas a partir das 19h. Apoio a mães solo e idosos.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-100 flex justify-between items-center text-sm font-semibold">
+                        <span class="text-gray-600"><i class="fa-solid fa-phone mr-1 text-gray-400"></i> (11) 2977-3311</span>
+                        <a href="https://maps.google.com" target="_blank" class="text-brand-orange hover:text-brand-darkOrange">Ver no Mapa <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASSISTENTE IA ESPECIALIZADO EM COMIDA E VALIDADE -->
+    <section id="chat-ia" class="py-16 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-8">
+                <span class="bg-brand-lightGreen text-brand-darkGreen text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">
+                    <i class="fa-solid fa-robot mr-1"></i> Inteligência Artificial Nutricional
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mt-3">Assistente de Validade & Conservação</h2>
+                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">
+                    Tem dúvidas se um alimento ainda pode ser consumido? Quer saber como armazenar marmitas ou evitar o desperdício? Pergunte para a nossa IA abaixo!
+                </p>
+            </div>
+
+            <!-- CONTAINER DO CHAT EMBUTIDO -->
+            <div class="bg-gray-50 rounded-2xl shadow-xl border border-gray-200 overflow-hidden flex flex-col h-[580px]">
+                <!-- Chat Header -->
+                <div class="bg-gradient-to-r from-brand-darkGreen to-brand-green p-4 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white text-brand-darkGreen flex items-center justify-center font-bold text-xl shadow">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold leading-tight">NutriBot Fome Zero</h4>
+                            <span class="text-xs text-green-100 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-green-300 animate-pulse"></span> Especialista em Segurança Alimentar
+                            </span>
+                        </div>
+                    </div>
+                    <span class="text-xs bg-white/20 px-3 py-1 rounded-full">Respostas Instantâneas</span>
+                </div>
+
+                <!-- Chat Prompts Rápidos -->
+                <div class="bg-emerald-50/60 p-3 border-b border-emerald-100 flex gap-2 overflow-x-auto text-xs scrollbar-none">
+                    <span class="text-gray-500 font-semibold self-center whitespace-nowrap"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Dúvidas rápidas:</span>
+                    <button onclick="askQuickPrompt('Quanto tempo dura marmita na geladeira?')" class="bg-white border border-emerald-200 hover:border-brand-green text-emerald-800 px-3 py-1.5 rounded-full whitespace-nowrap shadow-sm hover:bg-emerald-100 transition-colors">
+                        ❄️ Validade de Marmita
+                    </button>
+                    <button onclick="askQuickPrompt('Como saber se o ovo está estragado?')" class="bg-white border border-emerald-200 hover:border-brand-green text-emerald-800 px-3 py-1.5 rounded-full whitespace-nowrap shadow-sm hover:bg-emerald-100 transition-colors">
+                        🥚 Teste do Ovo
+                    </button>
+                    <button onclick="askQuickPrompt('Posso doar comida que passou da validade?')" class="bg-white border border-emerald-200 hover:border-brand-green text-emerald-800 px-3 py-1.5 rounded-full whitespace-nowrap shadow-sm hover:bg-emerald-100 transition-colors">
+                        ⚠️ Validade vs Vencimento
+                    </button>
+                    <button onclick="askQuickPrompt('Como congelar arroz e feijão com segurança?')" class="bg-white border border-emerald-200 hover:border-brand-green text-emerald-800 px-3 py-1.5 rounded-full whitespace-nowrap shadow-sm hover:bg-emerald-100 transition-colors">
+                        🍱 Congelamento de Alimentos
+                    </button>
+                </div>
+
+                <!-- Chat Mensagens -->
+                <div id="embedded-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 custom-scrollbar bg-gray-50">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-brand-green text-white flex items-center justify-center text-sm font-bold shrink-0">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="bg-white border border-gray-200 text-gray-800 p-4 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] text-sm leading-relaxed">
+                            Olá! Sou a IA do <strong>Projeto Fome Zero</strong>. 
+                            <br><br>
+                            Posso te ajudar com dúvidas sobre **conservação de alimentos, sinais de deterioração, validade de refeições e como doar com segurança**. O que você deseja saber hoje?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input Form -->
+                <form onsubmit="handleSendEmbeddedChat(event)" class="p-3 bg-white border-t border-gray-200 flex gap-2">
+                    <input type="text" id="embedded-user-input" placeholder="Pergunte sobre validade, geladeira, mofo..." class="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-brand-green outline-none text-sm">
+                    <button type="submit" class="bg-brand-green hover:bg-brand-darkGreen text-white font-bold px-5 py-3 rounded-xl transition-colors shadow flex items-center gap-2">
+                        <span>Enviar</span> <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-300 py-12 border-t-4 border-brand-orange mt-auto">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-full bg-brand-orange text-white flex items-center justify-center font-black">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <span class="text-xl font-extrabold tracking-tight text-white">FOME<span class="text-brand-green">ZERO</span></span>
+                </div>
+                <p class="text-sm text-gray-400">
+                    Iniciativa comunitária dedicada à erradicação da fome, redução do desperdício de alimentos e segurança alimentar para todos.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4">Navegação</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#inicio" class="hover:text-brand-orange transition-colors">Início</a></li>
+                    <li><a href="#cadastro" class="hover:text-brand-orange transition-colors">Cadastrar Doação</a></li>
+                    <li><a href="#cadastro" class="hover:text-brand-orange transition-colors">Solicitar Alimentos</a></li>
+                    <li><a href="#ongs" class="hover:text-brand-orange transition-colors">Pontos de Coleta</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4">Dicas da IA</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#chat-ia" class="hover:text-brand-green transition-colors">Validade de Alimentos</a></li>
+                    <li><a href="#chat-ia" class="hover:text-brand-green transition-colors">Como Congelar Marmitas</a></li>
+                    <li><a href="#chat-ia" class="hover:text-brand-green transition-colors">Segurança na Doação</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4">Contato & Redes</h4>
+                <p class="text-sm text-gray-400 mb-2"><i class="fa-solid fa-envelope mr-2 text-brand-orange"></i> contato@fomezero.org.br</p>
+                <p class="text-sm text-gray-400 mb-4"><i class="fa-solid fa-phone mr-2 text-brand-green"></i> 0800 770 FOME (3663)</p>
+                <div class="flex gap-4 text-xl">
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 text-gray-300 hover:bg-brand-orange hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 text-gray-300 hover:bg-brand-orange hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 text-gray-300 hover:bg-brand-orange hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
+            <p>&copy; 2026 Projeto Fome Zero. Todos os direitos reservados. Juntos contra a fome e o desperdício.</p>
+        </div>
+    </footer>
+
+    <!-- WIDGET FLUTUANTE DE CHAT DA IA (CANTO INFERIOR DIREITO) -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Botão Abrir -->
+        <button id="floating-chat-btn" onclick="toggleFloatingChat()" class="bg-gradient-to-r from-brand-orange to-brand-amber text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center gap-3 font-bold border-2 border-white">
+            <i class="fa-solid fa-robot text-2xl"></i>
+            <span class="hidden sm:inline">IA Tira-Dúvidas</span>
+        </button>
+
+        <!-- Window do Chat Flutuante -->
+        <div id="floating-chat-box" class="hidden absolute bottom-16 right-0 w-[90vw] sm:w-[380px] h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex-col overflow-hidden">
+            <div class="bg-brand-orange p-4 text-white flex justify-between items-center font-bold">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-robot text-xl"></i>
+                    <span>IA Fome Zero - Validade & Dicas</span>
+                </div>
+                <button onclick="toggleFloatingChat()" class="text-white hover:text-gray-200 text-xl focus:outline-none">&times;</button>
+            </div>
+            
+            <div id="floating-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar text-sm bg-gray-50">
+                <div class="bg-orange-50 border border-orange-100 p-3 rounded-xl text-orange-900">
+                    👋 Olá! Posso tirar dúvidas rápidas sobre <strong>validade de alimentos, marmitas e doações</strong>. Como posso ajudar?
+                </div>
+            </div>
+
+            <form onsubmit="handleSendFloatingChat(event)" class="p-3 bg-white border-t border-gray-200 flex gap-2">
+                <input type="text" id="floating-user-input" placeholder="Digite sua dúvida..." class="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange outline-none">
+                <button type="submit" class="bg-brand-orange text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-brand-darkOrange transition-colors">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT DE FUNCIONALIDADES E RESPOSTAS DA IA -->
+    <script>
+        // Menu Mobile Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Alternar Abas do Cadastro
+        function switchTab(tab) {
+            const btnDoar = document.getElementById('tab-doar');
+            const btnReceber = document.getElementById('tab-receber');
+            const formDoar = document.getElementById('form-doar');
+            const formReceber = document.getElementById('form-receber');
+
+            if (tab === 'doar') {
+                btnDoar.className = "flex-1 py-4 px-6 text-center font-bold text-lg flex items-center justify-center gap-2 border-b-4 border-brand-orange text-brand-orange bg-orange-50/50 transition-all";
+                btnReceber.className = "flex-1 py-4 px-6 text-center font-bold text-lg flex items-center justify-center gap-2 text-gray-500 border-b-4 border-transparent hover:text-brand-green transition-all";
+                formDoar.classList.remove('hidden');
+                formReceber.classList.add('hidden');
+            } else {
+                btnReceber.className = "flex-1 py-4 px-6 text-center font-bold text-lg flex items-center justify-center gap-2 border-b-4 border-brand-green text-brand-green bg-green-50/50 transition-all";
+                btnDoar.className = "flex-1 py-4 px-6 text-center font-bold text-lg flex items-center justify-center gap-2 text-gray-500 border-b-4 border-transparent hover:text-brand-orange transition-all";
+                formReceber.classList.remove('hidden');
+                formDoar.classList.add('hidden');
+            }
+        }
+
+        function scrollToCadastro(tab) {
+            switchTab(tab);
+            document.getElementById('cadastro').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Envio de Formulário e Modal de Alerta
+        function submitCadastro(event, tipo) {
+            event.preventDefault();
+            const alertModal = document.getElementById('alert-sucesso');
+            const titulo = document.getElementById('alert-titulo');
+            const msg = document.getElementById('alert-mensagem');
+
+            if (tipo === 'doador') {
+                titulo.innerText = "Doação Cadastrada!";
+                msg.innerText = "Sua doação foi registrada no sistema. Uma ONG parceira ou nossa equipe entrará em contato via WhatsApp para combinar a retirada ou entrega.";
+            } else {
+                titulo.innerText = "Solicitação Recebida!";
+                msg.innerText = "Recebemos o seu pedido com prioridade. Nossa equipe identificará a cozinha comunitária ou banco de alimentos mais próximo do seu endereço.";
+            }
+
+            alertModal.classList.remove('hidden');
+            event.target.reset();
+        }
+
+        function closeAlert() {
+            document.getElementById('alert-sucesso').classList.add('hidden');
+        }
+
+        // Filtro de ONGs
+        function filterOngs() {
+            const input = document.getElementById('search-ong').value.toLowerCase();
+            const cards = document.querySelectorAll('.ong-card');
+
+            cards.forEach(card => {
+                const searchData = card.getAttribute('data-search').toLowerCase();
+                const cardText = card.innerText.toLowerCase();
+
+                if (searchData.includes(input) || cardText.includes(input)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // Toggle Chat Flutuante
+        function toggleFloatingChat() {
+            const box = document.getElementById('floating-chat-box');
+            box.classList.toggle('hidden');
+            box.classList.toggle('flex');
+        }
+
+        // MOTOR DE RESPOSTAS DA IA (CONSERVAÇÃO DE ALIMENTOS & PROJETO)
+        function generateAIAnswer(question) {
+            const q = question.toLowerCase();
+
+            if (q.includes('marmita') || q.includes('prato pronto') || q.includes('comida pronta')) {
+                return "🍱 **Validade de Marmitas:**<br>• Na geladeira (até 4°C): Consumir em no máximo **3 a 4 dias**.<br>• No congelador (-18°C): Dura de **30 a 90 dias** com segurança.<br>⚠️ *Dica:* Espere a marmita esfriar (no máximo 2h fora da geladeira) antes de tampar e congelar.";
+            } 
+            else if (q.includes('ovo') || q.includes('ovos')) {
+                return "🥚 **Teste do Ovo Fresco:**<br>Coloque o ovo em um copo com água:<br>1. **Afundou no fundo:** Está bem fresco.<br>2. **Ficou em pé no fundo:** Ainda pode consumir, mas consuma rápido.<br>3. **Boiou na superfície:** ❌ **Estragado!** Descarte imediatamente pois acumulou gases de deterioração.";
+            }
+            else if (q.includes('vencido') || q.includes('vencimento') || q.includes('passou da validade')) {
+                return "⚠️ **Regras para Doação e Consumo:**<br>• **Alimentos vencidos NÃO devem ser doados.**<br>• Produtos com *'Consumir preferencialmente antes de'* (como biscoitos e secos) às vezes mantêm segurança por poucos dias após a data se a embalagem estiver lacrada, mas para doação oficial aceitamos apenas dentro da validade.";
+            }
+            else if (q.includes('arroz') || q.includes('feijão') || q.includes('feijao')) {
+                return "🌾 **Conservação de Arroz e Feijão:**<br>• Na geladeira: Duram de **4 a 5 dias** bem tampados.<br>• Congelados: O feijão dura até **3 meses** (de preferência sem tempero forte). O arroz congelado dura até **2 meses**.<br>💡 *Sinal de azedo:* Cheiro forte, textura pegajosa ou espuma ao esquentar indicam deterioração.";
+            }
+            else if (q.includes('leite')) {
+                return "🥛 **Validade do Leite:**<br>• Leite UHT aberto: Deve ser mantido em geladeira e consumido em até **3 dias**.<br>• Se notar talhado, cheiro azedo ou grumos ao ferver, descarte.";
+            }
+            else if (q.includes('ong') || q.includes('onde') || q.includes('bairro') || q.includes('ponto')) {
+                return "📍 **Encontrando ONGs:**<br>Você pode usar a barra de busca na nossa seção **'ONGs & Pontos'** nesta página! Digite seu bairro ou zona (ex: Centro, Itaquera, Santana) para ver os locais de coleta e entrega.";
+            }
+            else if (q.includes('doar') || q.includes('como doar')) {
+                return "❤️ **Como Doar:**<br>Clique no botão **'Quero Doar'** no topo do site e preencha o formulário com o tipo de alimento (secos, marmitas ou hortifrúti). Conectaremos você à ONG mais próxima!";
+            }
+            else if (q.includes('casca') || q.includes('aproveitamento') || q.includes('talos')) {
+                return "🌱 **Aproveitamento Integral:**<br>• **Talos de couve/espinafre:** Refogue com alho ou bata no feijão.<br>• **Cascas de banana:** Podem virar doces ou 'carne louca' vegana rica em fibras.<br>• **Cascas de batata:** Lave bem, tempere com azeite e sal e asse no forno como chips!";
+            }
+            else {
+                return "😊 **Dica de Segurança Alimentar:**<br>Sempre observe os 3 sentidos antes de consumir ou doar qualquer item: **Cheiro, Aspecto visual (presença de mofo ou cor estranha) e Textura**.<br><br>Se tiver dúvidas sobre um item específico, pergunte por exemplo: *'como conservar feijão'*, *'teste do ovo'* ou *'validade de marmitas'*!";
+            }
+        }
+
+        // Lógica do Chat Embutido
+        function handleSendEmbeddedChat(e) {
+            e.preventDefault();
+            const input = document.getElementById('embedded-user-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            appendMessage('embedded-chat-messages', msg, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                const botReply = generateAIAnswer(msg);
+                appendMessage('embedded-chat-messages', botReply, 'bot');
+            }, 500);
+        }
+
+        // Lógica do Chat Flutuante
+        function handleSendFloatingChat(e) {
+            e.preventDefault();
+            const input = document.getElementById('floating-user-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            appendMessage('floating-chat-messages', msg, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                const botReply = generateAIAnswer(msg);
+                appendMessage('floating-chat-messages', botReply, 'bot');
+            }, 500);
+        }
+
+        function askQuickPrompt(text) {
+            document.getElementById('embedded-user-input').value = text;
+            handleSendEmbeddedChat(new Event('submit'));
+        }
+
+        function appendMessage(containerId, text, sender) {
+            const container = document.getElementById(containerId);
+            const wrapper = document.createElement('div');
+            
+            if (sender === 'user') {
+                wrapper.className = "flex justify-end";
+                wrapper.innerHTML = `
+                    <div class="bg-brand-orange text-white px-4 py-2.5 rounded-2xl rounded-tr-none max-w-[80%] text-sm shadow">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                wrapper.className = "flex items-start gap-2.5";
+                wrapper.innerHTML = `
+                    <div class="w-7 h-7 rounded-full bg-brand-green text-white flex items-center justify-center text-xs font-bold shrink-0">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-white border border-gray-200 text-gray-800 p-3.5 rounded-2xl rounded-tl-none max-w-[85%] text-sm shadow-sm leading-relaxed">
+                        ${text}
+                    </div>
+                `;
+            }
+
+            container.appendChild(wrapper);
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+</body>
+</html>
